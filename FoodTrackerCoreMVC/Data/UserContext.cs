@@ -8,9 +8,9 @@ namespace FoodTrackerCoreMVC.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public UserContext(DbContextOptions<UserContext> options)
+            : base(options)
         {
-            optionsBuilder.UseSqlServer(@"Server = LAPTOP-P9THCP54; Database = FoodTrackerAccounts; TrustedConnection = True;");
         }
     }
 }
