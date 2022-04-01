@@ -28,7 +28,7 @@ namespace FoodTrackingApp.Controllers
         }
 
         // GET: UserProfiles/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -36,7 +36,7 @@ namespace FoodTrackingApp.Controllers
             }
 
             var userProfile = await _context.UserProfile
-                .FirstOrDefaultAsync(m => m.UserprofileId == id);
+                .FirstOrDefaultAsync(m => m.Username == id);
             if (userProfile == null)
             {
                 return NotFound();
