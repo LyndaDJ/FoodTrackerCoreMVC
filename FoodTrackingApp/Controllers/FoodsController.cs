@@ -12,64 +12,64 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FoodTrackingApp.Controllers
 {
-    public class UserProfilesController : Controller
+    public class FoodsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public UserProfilesController(ApplicationDbContext context)
+        public FoodsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: UserProfiles
+        // GET: Foods
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.UserProfile.ToListAsync());
+            return View(await _context.FoodRecord.ToListAsync());
         }
 
-        [Authorize]
-        // GET: UserProfiles/Details/5
-        public async Task<IActionResult> Details(string id)
+        // GET: Foods/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var userProfile = await _context.UserProfile
-                .FirstOrDefaultAsync(m => m.Username == id);
-            if (userProfile == null)
+            var food = await _context.FoodRecord
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (food == null)
             {
                 return NotFound();
             }
 
-            return View(userProfile);
+            return View(food);
         }
+
+        // GET: Foods/Create
         
-        // GET: UserProfiles/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: UserProfiles/Create
+        // POST: Foods/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserprofileId,Firstname,Lastname,Height,Weight,Goalweight")] UserProfile userProfile)
+        public async Task<IActionResult> Create([Bind("Id,CreatedDate,Meal,Carbohydrate,Protein,Fat,Snacks")] Food food)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(userProfile);
+                _context.Add(food);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(userProfile);
+            return View(food);
         }
 
-        // GET: UserProfiles/Edit/5
+        // GET: Foods/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,22 +77,22 @@ namespace FoodTrackingApp.Controllers
                 return NotFound();
             }
 
-            var userProfile = await _context.UserProfile.FindAsync(id);
-            if (userProfile == null)
+            var food = await _context.FoodRecord.FindAsync(id);
+            if (food == null)
             {
                 return NotFound();
             }
-            return View(userProfile);
+            return View(food);
         }
 
-        // POST: UserProfiles/Edit/5
+        // POST: Foods/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserprofileId,Firstname,Lastname,Height,Weight,Goalweight")] UserProfile userProfile)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CreatedDate,Meal,Carbohydrate,Protein,Fat,Snacks")] Food food)
         {
-            if (id != userProfile.UserprofileId)
+            if (id != food.Id)
             {
                 return NotFound();
             }
@@ -101,12 +101,12 @@ namespace FoodTrackingApp.Controllers
             {
                 try
                 {
-                    _context.Update(userProfile);
+                    _context.Update(food);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserProfileExists(userProfile.UserprofileId))
+                    if (!FoodExists(food.Id))
                     {
                         return NotFound();
                     }
@@ -117,10 +117,10 @@ namespace FoodTrackingApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(userProfile);
+            return View(food);
         }
 
-        // GET: UserProfiles/Delete/5
+        // GET: Foods/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -128,30 +128,30 @@ namespace FoodTrackingApp.Controllers
                 return NotFound();
             }
 
-            var userProfile = await _context.UserProfile
-                .FirstOrDefaultAsync(m => m.UserprofileId == id);
-            if (userProfile == null)
+            var food = await _context.FoodRecord
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (food == null)
             {
                 return NotFound();
             }
 
-            return View(userProfile);
+            return View(food);
         }
 
-        // POST: UserProfiles/Delete/5
+        // POST: Foods/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userProfile = await _context.UserProfile.FindAsync(id);
-            _context.UserProfile.Remove(userProfile);
+            var food = await _context.FoodRecord.FindAsync(id);
+            _context.FoodRecord.Remove(food);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserProfileExists(int id)
+        private bool FoodExists(int id)
         {
-            return _context.UserProfile.Any(e => e.UserprofileId == id);
+            return _context.FoodRecord.Any(e => e.Id == id);
         }
     }
 }

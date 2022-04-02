@@ -11,5 +11,6 @@ namespace FoodTrackingApp.Data
         {
         }
         public DbSet<FoodTrackingApp.Models.UserProfile> UserProfile { get; set; }
+        public DbSet<FoodTrackingApp.Models.Food> FoodRecord { get; set; }
     }
 }
