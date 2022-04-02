@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodTrackerCoreMVC", "FoodT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodTrackingApp", "FoodTrackingApp\FoodTrackingApp.csproj", "{6E8ECECD-9370-425C-871E-B95290581C62}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FTApp", "FTApp\FTApp.csproj", "{51BF714E-70D3-4FC2-8933-4981D1E1620C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6E8ECECD-9370-425C-871E-B95290581C62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E8ECECD-9370-425C-871E-B95290581C62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E8ECECD-9370-425C-871E-B95290581C62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51BF714E-70D3-4FC2-8933-4981D1E1620C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51BF714E-70D3-4FC2-8933-4981D1E1620C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51BF714E-70D3-4FC2-8933-4981D1E1620C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51BF714E-70D3-4FC2-8933-4981D1E1620C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
