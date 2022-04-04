@@ -33,14 +33,15 @@ namespace FoodTrackingApp.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
+      
 
             var userProfile = await _context.UserProfile
                 .FirstOrDefaultAsync(m => m.Username == id);
             if (userProfile == null)
             {
-                return NotFound();
+                return RedirectToAction("Create", "UserProfiles");
             }
 
             return View(userProfile);

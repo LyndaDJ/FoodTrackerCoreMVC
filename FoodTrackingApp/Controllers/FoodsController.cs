@@ -33,6 +33,7 @@ namespace FoodTrackingApp.Controllers
         {
             return View();
         }
+
         //POST: Foods/SearchResults
         public async Task<IActionResult> SearchResults(string Phrase)
         {
