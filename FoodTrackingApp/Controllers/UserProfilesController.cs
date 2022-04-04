@@ -121,34 +121,6 @@ namespace FoodTrackingApp.Controllers
             return View(userProfile);
         }
 
-        // GET: UserProfiles/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var userProfile = await _context.UserProfile
-                .FirstOrDefaultAsync(m => m.UserprofileId == id);
-            if (userProfile == null)
-            {
-                return NotFound();
-            }
-
-            return View(userProfile);
-        }
-
-        // POST: UserProfiles/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var userProfile = await _context.UserProfile.FindAsync(id);
-            _context.UserProfile.Remove(userProfile);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         private bool UserProfileExists(int id)
         {
