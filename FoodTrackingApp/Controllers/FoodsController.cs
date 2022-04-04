@@ -28,6 +28,33 @@ namespace FoodTrackingApp.Controllers
             return View(await _context.FoodRecord.ToListAsync());
         }
 
+        //GET: Foods/Search
+        public async Task<IActionResult> Search()
+        {
+            return View();
+        }
+        //POST: Foods/SearchResults
+        public async Task<IActionResult> SearchResults(string Phrase)
+        {
+            return View("Index", await _context.FoodRecord
+                .Where(x=>x.Carbohydrate.Contains(Phrase)
+                || x.Protein.Contains(Phrase)
+                || x.Fat.Contains(Phrase)
+                || x.Snacks.Contains(Phrase)).ToListAsync());
+        }
+
+        //GET: 
+        public async Task<IActionResult> SearchbyDate()
+        {
+            return View();
+        }
+        //POST: 
+        public async Task<IActionResult> SearchbyDateResults(DateTime datefilter)
+        {
+            return View("Index", await _context.FoodRecord
+                .Where(x => x.CreatedDate.Date == datefilter).ToListAsync());
+        }
+
         // GET: Foods/Details/5
         public async Task<IActionResult> Details(int? id)
         {
