@@ -13,7 +13,7 @@ namespace FoodTrackingApp.Models
         public string Protein { get; set; }
         public string Fat { get; set; }
         public string Snacks { get; set; }
-        
+        public string Username { get; set; }
 
         public Food()
         {
