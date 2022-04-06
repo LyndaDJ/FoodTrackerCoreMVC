@@ -1,17 +1,25 @@
+﻿using FoodTrackingApp.Controllers;
+using Moq;
 using NUnit.Framework;
 
 namespace FoodTrackerTests
 {
-    public class Tests
+    public class UserprofileControllerTests
     {
         [SetUp]
         public void Setup()
         {
+
         }
 
         [Test]
-        public void Test1()
+        public void Index()
         {
+            //Arrange
+
+            //Act
+
+            //Assert
             Assert.Pass();
         }
     }
