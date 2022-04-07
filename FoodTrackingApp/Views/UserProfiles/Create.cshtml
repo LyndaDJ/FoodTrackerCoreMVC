@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Create";
 }
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
 <h1>Create</h1>
 
@@ -44,7 +47,8 @@
     </div>
 </div>
 
-
+}
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 }

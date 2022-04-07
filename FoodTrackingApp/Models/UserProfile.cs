@@ -16,7 +16,7 @@ namespace FoodTrackingApp.Models
 
         [Display(Name = "Goal Weight")]
         public double Goalweight { get; set; }
-
+        [Display(Name = "Email")]
         public string Username { get; set; }
 
         public UserProfile()

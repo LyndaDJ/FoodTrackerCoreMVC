@@ -9,76 +9,71 @@ using Microsoft.EntityFrameworkCore;
 using FoodTrackingApp.Data;
 using FoodTrackingApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using FoodTrackingApp.Repositories;
+using System.Data;
 
 namespace FoodTrackingApp.Controllers
 {
     public class FoodsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private IFood _foodrepo;
 
-        public FoodsController(ApplicationDbContext context)
+        public FoodsController(IFood _foodrepo)
         {
-            _context = context;
+            this._foodrepo = _foodrepo;
         }
 
         // GET: Foods
-        [Authorize]
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await _context.FoodRecord.ToListAsync());
+            var foods = from food in _foodrepo.GetAll() select food;
+            return View(foods);
         }
 
         //GET: Foods/Search
-        public async Task<IActionResult> Search()
+        public ActionResult Search()
         {
             return View();
         }
 
         //POST: Foods/SearchResults
-        public async Task<IActionResult> SearchResults(string Phrase)
+        public ActionResult SearchResults(string Phrase)
         {
-            return View("Index", await _context.FoodRecord
-                .Where(x=>x.Carbohydrate.Contains(Phrase)
-                || x.Protein.Contains(Phrase)
-                || x.Fat.Contains(Phrase)
-                || x.Snacks.Contains(Phrase)).ToListAsync());
+            return View("Index", _foodrepo.GetFoodRecordsByPhrase(Phrase).ToList());
         }
 
         //GET: 
-        public async Task<IActionResult> SearchbyDate()
+        public ActionResult SearchbyDate()
         {
             return View();
         }
         //POST: 
-        public async Task<IActionResult> SearchbyDateResults(DateTime datefilter)
+        public ActionResult SearchbyDateResults(DateTime datefilter)
         {
-            return View("Index", await _context.FoodRecord
-                .Where(x => x.CreatedDate.Date == datefilter).ToListAsync());
+            return View("Index", _foodrepo.GetFoodRecordsByDate(datefilter).ToList());
         }
 
         // GET: Foods/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var food = await _context.FoodRecord
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (food == null)
+            Food rec = _foodrepo.GetByID(id);
+            if (rec == null)
             {
                 return NotFound();
             }
-
-            return View(food);
+            return View(rec);
         }
 
         // GET: Foods/Create
-        
-        public IActionResult Create()
+
+        public ActionResult Create()
         {
-            return View();
+            return View(new Food());
         }
 
         // POST: Foods/Create
@@ -86,26 +81,25 @@ namespace FoodTrackingApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CreatedDate,Meal,Carbohydrate,Protein,Fat,Snacks")] Food food)
+        public ActionResult Create([Bind("Id,CreatedDate,Meal,Carbohydrate,Protein,Fat,Snacks")] Food food)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(food);
-                await _context.SaveChangesAsync();
+                _foodrepo.InsertFoodRecord(food);
+                _foodrepo.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(food);
         }
 
         // GET: Foods/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var food = await _context.FoodRecord.FindAsync(id);
+            Food food = _foodrepo.GetByID(id);
             if (food == null)
             {
                 return NotFound();
@@ -118,46 +112,35 @@ namespace FoodTrackingApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CreatedDate,Meal,Carbohydrate,Protein,Fat,Snacks")] Food food)
+        public ActionResult Edit(int id, [Bind("Id,CreatedDate,Meal,Carbohydrate,Protein,Fat,Snacks")] Food food)
         {
-            if (id != food.Id)
+            try
             {
-                return NotFound();
+
+                if (ModelState.IsValid)
+                {
+                    _foodrepo.UpdateFoodRecord(food);
+                    _foodrepo.Save();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Please try again");
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(food);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!FoodExists(food.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
             return View(food);
         }
 
         // GET: Foods/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var food = await _context.FoodRecord
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Food food = _foodrepo.GetByID(id);
             if (food == null)
             {
                 return NotFound();
@@ -169,17 +152,14 @@ namespace FoodTrackingApp.Controllers
         // POST: Foods/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            var food = await _context.FoodRecord.FindAsync(id);
-            _context.FoodRecord.Remove(food);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            Food food = _foodrepo.GetByID(id);
+            _foodrepo.DeleteFoodRecord(id);
+            _foodrepo.Save();
+            return RedirectToAction("Index");
         }
 
-        private bool FoodExists(int id)
-        {
-            return _context.FoodRecord.Any(e => e.Id == id);
-        }
     }
+
 }

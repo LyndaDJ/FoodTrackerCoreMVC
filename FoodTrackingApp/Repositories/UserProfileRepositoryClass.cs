@@ -23,6 +23,10 @@ namespace FoodTrackingApp.Repositories
             _context.Entry(userProfile).State = EntityState.Modified;
         }
 
+        public UserProfile GetByUsername(string username)
+        {
+            return _context.UserProfile.Find(username);
+        }
         public UserProfile GetByID(int id)
         {
             return _context.UserProfile.Find(id);

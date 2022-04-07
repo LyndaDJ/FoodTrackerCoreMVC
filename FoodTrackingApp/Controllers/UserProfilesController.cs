@@ -9,48 +9,40 @@ using Microsoft.EntityFrameworkCore;
 using FoodTrackingApp.Data;
 using FoodTrackingApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using FoodTrackingApp.Repositories;
+using System.Data;
 
 namespace FoodTrackingApp.Controllers
 {
     public class UserProfilesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private IUserProfile _userProfilerepo;
 
-        public UserProfilesController(ApplicationDbContext context)
+        public UserProfilesController(IUserProfile userProfilerepo)
         {
-            _context = context;
+            this._userProfilerepo = _userProfilerepo;
         }
 
-        // GET: UserProfiles
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.UserProfile.ToListAsync());
-        }
-
-        [Authorize]
         // GET: UserProfiles/Details/5
-        public async Task<IActionResult> Details(string id)
+        public ActionResult Details(string username)
         {
-            if (id == null)
+            if (username == null)
             {
                 return RedirectToPage("/Account/Login", new { area = "Identity" });
             }
-      
 
-            var userProfile = await _context.UserProfile
-                .FirstOrDefaultAsync(m => m.Username == id);
-            if (userProfile == null)
+            UserProfile profile_detail = _userProfilerepo.GetByUsername(username);
+            if (profile_detail == null)
             {
                 return RedirectToAction("Create", "UserProfiles");
             }
-
-            return View(userProfile);
+            return View(profile_detail);
         }
         
         // GET: UserProfiles/Create
-        public IActionResult Create()
+        public ActionResult Create()
         {
-            return View();
+            return View(new UserProfile());
         }
 
         // POST: UserProfiles/Create
@@ -59,26 +51,33 @@ namespace FoodTrackingApp.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserprofileId,Firstname,Lastname,Height,Weight,Goalweight")] UserProfile userProfile)
+        public ActionResult Create([Bind("UserprofileId,Firstname,Lastname,Height,Weight,Goalweight")] UserProfile userProfile)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(userProfile);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _userProfilerepo.CreateNewprofile(userProfile);
+                    _userProfilerepo.Save();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Please try again");
+
             }
             return View(userProfile);
         }
 
         // GET: UserProfiles/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var userProfile = await _context.UserProfile.FindAsync(id);
+            UserProfile userProfile = _userProfilerepo.GetByID(id);
             if (userProfile == null)
             {
                 return NotFound();
@@ -91,7 +90,7 @@ namespace FoodTrackingApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserprofileId,Firstname,Lastname,Height,Weight,Goalweight")] UserProfile userProfile)
+        public ActionResult Edit(int id, [Bind("UserprofileId,Firstname,Lastname,Height,Weight,Goalweight")] UserProfile userProfile)
         {
             if (id != userProfile.UserprofileId)
             {
@@ -100,31 +99,11 @@ namespace FoodTrackingApp.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(userProfile);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserProfileExists(userProfile.UserprofileId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _userProfilerepo.EditProfile(userProfile);
+                _userProfilerepo.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(userProfile);
-        }
-
-
-        private bool UserProfileExists(int id)
-        {
-            return _context.UserProfile.Any(e => e.UserprofileId == id);
         }
     }
 }
