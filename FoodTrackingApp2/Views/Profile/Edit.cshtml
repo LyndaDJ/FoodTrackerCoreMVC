@@ -1,0 +1,58 @@
+﻿@model Profile
+
+<form id="profile-form" method="post" enctype="multipart/form-data" asp-action="Edit">
+    @*<input asp-for="Id" hidden/>*@
+    <h2 class = "text-primary"> Profile Detail</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="250px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">@Model.Firstname @Model.Lastname</span><span class="text-white-50">user@mail.com</span><span> </span></div>
+        </div>
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class = "mb-3">
+                <label asp-for="Firstname" class="control-label"></label>
+                <input asp-for="Firstname" class="form-control" />
+                <span asp-validation-for="Firstname" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Lastname" class="control-label"></label>
+                 <input asp-for="Lastname" class="form-control" />
+                 <span asp-validation-for="Lastname" class="text-danger"></span>
+        
+            </div>
+            <div class="mb-3">
+                <label asp-for="Height" class="control-label"></label>
+                <input asp-for="Height" class="form-control" />
+                 <span asp-validation-for="Height" class="text-danger"></span>
+          
+            </div>
+            <div class="mb-3">
+                <label asp-for="Weight" class="control-label"></label>
+                <input asp-for="Weight" class="form-control" />
+                 <span asp-validation-for="Weight" class="text-danger"></span>
+           
+            </div>
+            <div class="mb-3">
+                <label asp-for="Goalweight" class="control-label"></label>
+                <input asp-for="Goalweight" class="form-control" />
+                 <span asp-validation-for="Goalweight" class="text-danger"></span>
+           
+            </div>
+
+            <button type="submit" class="btn btn-primary" style = "width:150px"> Update </button>
+            <a asp-controller = "Profile" asp-action="Details" class = "btn btn-primary" style = "width:150px"> Back to Profile</a>
+        </div>
+
+     </div>
+</form>
+
+@section Scripts{
+@{
+    <partial name="_ValidationScriptsPartial" />
+}
+}
+
+
+
+            

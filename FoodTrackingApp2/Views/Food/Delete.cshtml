@@ -1,0 +1,52 @@
+﻿@model Food
+
+<form method="post" asp-action="DeletePOST">
+    <input asp-for="Id" hidden/>
+    <div class = "border p-3 mt-4">
+        <div class = "row pb-2">
+            <h2 class = "text-primary"> Delete food record</h2>
+            <hr />
+        </div>
+        <div class = "mb-3">
+            <label asp-for="CreatedDate" class="control-label"></label>
+            <input asp-for="CreatedDate" disabled class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Meal" class="control-label"></label>
+            <select asp-for="Meal" disabled asp-items="Html.GetEnumSelectList<MealType>()" class="form-control"></select>
+        
+        </div>
+        <div class="mb-3">
+            <label asp-for="Carbohydrate" class="control-label"></label>
+            <input asp-for="Carbohydrate" disabled class="form-control" />
+          
+        </div>
+        <div class="mb-3">
+            <label asp-for="Protein" class="control-label"></label>
+            <input asp-for="Protein" disabled class="form-control" />
+           
+        </div>
+        <div class="mb-3">
+            <label asp-for="Fat" class="control-label"></label>
+            <input asp-for="Fat" disabled class="form-control" />
+           
+        </div>
+        <div class="mb-3">
+            <label asp-for="Snacks" class="control-label"></label>
+            <input asp-for="Snacks" disabled class="form-control" />
+        
+        </div>
+        <button type="submit" class="btn btn-danger" style = "width:150px"> Delete </button>
+        <a asp-controller = "Food" asp-action="Index" class = "btn btn-primary" style = "width:150px">Back to list</a>
+    </div>
+</form>
+
+@section Scripts{
+@{
+    <partial name="_ValidationScriptsPartial" />
+}
+}
+
+
+
+            

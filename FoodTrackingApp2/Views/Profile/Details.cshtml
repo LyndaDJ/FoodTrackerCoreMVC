@@ -1,0 +1,52 @@
+﻿@model Profile
+
+<form id="profile-form" method="post" enctype="multipart/form-data">
+    <input asp-for="Id" hidden/>
+    <h2 class = "text-primary"> Profile Detail</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="250px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">@Model.Firstname @Model.Lastname</span><span class="text-white-50"></span><span> </span></div>
+        </div>
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class = "mb-3">
+                <label asp-for="Firstname" class="control-label"></label>
+                <input asp-for="Firstname" disabled class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Lastname" class="control-label"></label>
+                 <input asp-for="Lastname" disabled class="form-control" />
+        
+            </div>
+            <div class="mb-3">
+                <label asp-for="Height" class="control-label"></label>
+                <input asp-for="Height" disabled class="form-control" />
+          
+            </div>
+            <div class="mb-3">
+                <label asp-for="Weight" class="control-label"></label>
+                <input asp-for="Weight" disabled class="form-control" />
+           
+            </div>
+            <div class="mb-3">
+                <label asp-for="Goalweight" class="control-label"></label>
+                <input asp-for="Goalweight" disabled class="form-control" />
+           
+            </div>
+
+            @*<a asp-controller = "Profile" asp-action="Edit" class = "btn btn-primary" style = "width:150px"> Edit</a>*@
+        </div>
+
+     </div>
+</form>
+
+@section Scripts{
+@{
+    <partial name="_ValidationScriptsPartial" />
+}
+}
+
+
+
+            

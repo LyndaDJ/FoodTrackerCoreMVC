@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewData["Title"] = "SearchbyDate";
+}
+
+<h1>Filter by Date</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SearchbyDateResults">
+            
+            <div class="form-group">
+                <input type="date" name = "datefilter" class="form-control"/>
+            </div>
+            <button type="submit" class="btn btn-primary" style = "width:150px"> Search</button>
+            <a asp-controller = "Food" asp-action="Index" class = "btn btn-primary" style = "width:150px">Back to list</a>
+            
+            
+        </form>
+    </div>
+</div>
+

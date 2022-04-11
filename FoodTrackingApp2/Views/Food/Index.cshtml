@@ -1,0 +1,81 @@
+﻿@using FoodTrackingApp2.Models
+@model IEnumerable<Food>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*@if (TempData["success"] != null)
+{
+    <h3>@TempData["success"]</h3>
+}*@
+
+<h1>Food List</h1>
+<p>
+    <a asp-controller="Food" asp-action ="Create" class = "btn btn-primary"> Add Food Record</a>
+</p>
+<p>
+    <a asp-controller = "Food" asp-action="Search" class = "btn btn-primary">Search for existing food record by food</a>
+</p>
+<p>
+    <a asp-controller = "Food" asp-action="SearchbyDate" class = "btn btn-primary">Search for existing food record by Date</a>
+</p>
+<table class="table table-bordered table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Meal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Carbohydrate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Protein)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Snacks)
+            </th>
+            <th>
+                Actions
+            </th>
+           </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Meal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Carbohydrate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Protein)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Snacks)
+                </td>
+                <td>
+                    <a asp-controller="Food" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-controller="Food" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-controller = "Food" asp-action="Index" class = "btn btn-primary" style = "width:150px">Index</a>
+
+

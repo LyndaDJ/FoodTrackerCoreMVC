@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h1>Search by food</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SearchResults">
+            <div class="form-group">
+                <label for="Phrase" class="control-label"></label>
+                <input name="Phrase" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary" style = "width:150px"> Search</button>
+                <a asp-controller = "Food" asp-action="Index" class = "btn btn-primary" style = "width:150px">Back to list</a>
+            
+        </form>
+    </div>
+</div>
+
